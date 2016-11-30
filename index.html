@@ -1,0 +1,85 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	</head>
+	<style>
+	#amount { border: none; }
+	#cluster_select, #amount { font-size: 20px; }
+	#slider_range { width: 800px; margin: 8px 0px; }
+	.header { margin-left: 30px; line-height: 30px; font-size: 20px; }
+	.contain { min-width: 1300px; }
+	.image{ height: 350px; }
+	</style>
+<body>
+	<div class="contain">
+		<div class="header">
+			<b>Progenitor id:</b>
+			<select id="cluster_select">
+				<option value="00001">1</option>
+				<option value="00002">2</option>
+				<option value="00003">3</option>
+				<option value="00004">4</option>
+				<option value="00005">5</option>
+				<option value="00006">6</option>
+				<option value="00007">7</option>
+				<option value="00008">8</option>
+				<option value="00009">9</option>
+				<option value="00010">10</option>
+			</select>
+			<br>
+			<b>Aexp:</b> <input type="text" id="amount" value="0.3504" disabled/><br>
+			<div id="slider_range"></div>
+		</div>
+
+		<img class="image" id="x_density" src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_x_density.png" />
+		<img class="image" id="y_density" src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_y_density.png" />
+		<img class="image" id="z_density" src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_z_density.png" />
+		<br/>
+
+		<img class="image" id="x_kT"      src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_x_kT.png" />
+		<img class="image" id="y_kT"      src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_y_kT.png" />
+		<img class="image" id="z_kT"      src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_z_kT.png" />
+		<br/>
+
+		<img class="image" id="x_szy"     src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_x_szy.png" />
+		<img class="image" id="y_szy"     src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_y_szy.png" />
+		<img class="image" id="z_szy"     src="https://storage.googleapis.com/clusterinspection/proid00001_a0.3504_proj_z_szy.png" />
+		<br/>
+
+	</div>
+	<script>
+	function update_imgs() {
+		var aexp = $( "#amount" ).val();
+		var clid = $( "#cluster_select" ).val();
+
+		var fields = ["density", "kT", "szy"];
+		var axes = ["x", "y", "z"];
+		for (var i = 0; i < fields.length; i++) {
+			for (var j = 0; j < axes.length; j++) {
+				$("#"+axes[j]+"_"+fields[i]).attr("src",
+					"https://storage.googleapis.com/clusterinspection/proid"+clid+"_a"+aexp+"_proj_"+axes[j]+"_"+fields[i]+".png");
+			}
+		}
+	}
+
+	$(function() {
+		$( "#cluster_select" ).change( update_imgs );
+		
+	    var valMap = [0.3504, 0.3772, 0.4005, 0.4252, 0.4517, 0.4756, 0.5014, 0.5517, 0.5753, 0.6001, 0.6259, 0.6503, 0.7015, 0.7263, 0.7511, 0.8011, 0.8264, 0.8514, 0.8783, 0.9001, 0.9265, 0.9764, 1.0005];
+	    $("#slider_range").slider({
+	        min: 0,
+	        max: valMap.length - 1,
+	        value: 0,
+	        slide: function(event, ui) {                        
+	            $("#amount").val(valMap[ui.value]);
+	            update_imgs();              
+	        }       
+	    });
+	})
+
+	
+	</script>
+</body>
+</html>
